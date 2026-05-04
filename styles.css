@@ -2053,9 +2053,9 @@
   display: block !important;
   position: relative !important;
   width: 100% !important;
-  height: 210px !important;
-  min-height: 210px !important;
-  max-height: 210px !important;
+  height: 190px !important;
+  min-height: 190px !important;
+  max-height: 190px !important;
   margin: 0 0 18px 0 !important;
   padding: 18px !important;
   flex: none !important;
@@ -2076,7 +2076,7 @@
 }
 
 #projects .project-card h3 {
-  margin: 0 0 10px 0 !important;
+  margin: 0 0 8px 0 !important;
   color: #fff7ff !important;
   line-height: 1.2 !important;
 }
@@ -2180,9 +2180,9 @@
 #projects .project-card > .project-visual {
   display: block !important;
   position: relative !important;
-  height: 210px !important;
-  min-height: 210px !important;
-  max-height: 210px !important;
+  height: 190px !important;
+  min-height: 190px !important;
+  max-height: 190px !important;
   margin: 0 0 18px 0 !important;
   padding: 18px !important;
   border-radius: 18px !important;
@@ -2207,7 +2207,9 @@
   line-height: 1.2 !important;
   font-size: 1.18rem !important;
 }
-
+#projects .project-card p {
+  font-size: 0.95rem;
+}
 #projects .project-card > div:not(.project-visual) > p,
 #projects .project-card p:not(.showcase-label):not(.showcase-subtitle) {
   color: #d8cce4 !important;
@@ -2296,21 +2298,23 @@
   #projects .project-visual > p {
     font-size: 0.92rem !important;
   }
-.project-card.featured {
+}
+/* Featured project hover glow */
+.featured-project {
   position: relative;
   overflow: hidden;
 }
 
-.project-card.featured::after {
+.featured-project::after {
   content: "";
   position: absolute;
   inset: 0;
   background: radial-gradient(circle at 70% 30%, rgba(124,58,237,0.25), transparent 60%);
   opacity: 0;
   transition: opacity 0.3s ease;
+  pointer-events: none;
 }
 
-.project-card.featured:hover::after {
+.featured-project:hover::after {
   opacity: 1;
-}
 }
