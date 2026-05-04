@@ -1,5 +1,0 @@
-RewriteEngine On
-
-RewriteCond %{HTTPS} off
-RewriteCond %{HTTP_HOST} ^nickcanizalez\.kesug\.com$ [NC]
-RewriteRule ^(.*)$ https://nickcanizalez.kesug.com/$1 [L,R=301]
