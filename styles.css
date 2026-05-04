@@ -2318,3 +2318,59 @@
 .featured-project:hover::after {
   opacity: 1;
 }
+
+
+/* v15 sister critique pass: faster visual proof and mobile scan */
+.proof-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  padding-top: 10px;
+  padding-bottom: 44px;
+}
+
+.proof-strip article {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(249,168,212,0.24);
+  border-radius: 20px;
+  padding: 18px;
+  background: linear-gradient(145deg, rgba(18,11,31,0.78), rgba(7,5,13,0.74));
+  box-shadow: 0 14px 30px rgba(0,0,0,0.18);
+}
+
+.proof-strip article::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  background: linear-gradient(to bottom, var(--accent), var(--accent-3));
+  opacity: 0.85;
+}
+
+.proof-strip strong {
+  display: block;
+  margin-bottom: 6px;
+  color: #fff7ff;
+  font-size: 1rem;
+}
+
+.proof-strip span {
+  display: block;
+  color: #d8cce4;
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+@media (max-width: 860px) {
+  .proof-strip {
+    grid-template-columns: 1fr;
+    padding-top: 0;
+    padding-bottom: 34px;
+    gap: 12px;
+  }
+
+  .proof-strip article {
+    padding: 16px 16px 16px 18px;
+  }
+}
