@@ -2960,3 +2960,251 @@
     min-height: auto;
   }
 }
+
+/* v21 story alignment fix: each text step now owns its matching visual panel. */
+@media (min-width: 901px) {
+  .story-row-wrap {
+    display: block;
+  }
+
+  .story-row {
+    min-height: calc(100vh - 64px);
+    display: grid;
+    grid-template-columns: minmax(0, 0.92fr) minmax(320px, 1.08fr);
+    gap: 48px;
+    align-items: center;
+    padding: 42px 0;
+  }
+
+  .story-row + .story-row {
+    border-top: 1px solid rgba(255,255,255,0.045);
+  }
+
+  .story-row .story-step {
+    min-height: 250px;
+    opacity: 1;
+    transform: none;
+  }
+
+  .story-row .story-visual-stage {
+    position: relative;
+    top: auto;
+    height: min(450px, calc(100vh - 150px));
+    min-height: 350px;
+  }
+
+  .story-row .story-visual-card {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .story-row .story-visual-card h3 {
+    font-size: clamp(2.1rem, 3.7vw, 4rem);
+  }
+}
+
+@media (min-width: 901px) and (max-height: 760px) {
+  .story-row {
+    min-height: calc(100vh - 58px);
+    padding: 30px 0;
+  }
+
+  .story-row .story-step {
+    min-height: 210px;
+  }
+
+  .story-row .story-visual-stage {
+    height: min(390px, calc(100vh - 130px));
+    min-height: 320px;
+  }
+
+  .story-row .story-visual-card h3 {
+    font-size: clamp(2rem, 3.25vw, 3.35rem);
+  }
+}
+
+@media (max-width: 900px) {
+  .story-row {
+    display: grid;
+    gap: 18px;
+    margin-bottom: 36px;
+  }
+
+  .story-row .story-step {
+    opacity: 1;
+    transform: none;
+  }
+
+  .story-row .story-visual-card {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* v22 Apple-style pinned story rebuild: one stable sticky stage with scroll progress. */
+.story-pin-section {
+  min-height: 390vh;
+  padding: 0;
+  overflow: visible;
+}
+
+@media (min-width: 901px) {
+  .story-pin-section {
+    height: 390vh;
+  }
+
+  .story-pin-wrap {
+    position: sticky;
+    top: 58px;
+    min-height: calc(100vh - 58px);
+    display: grid;
+    grid-template-columns: minmax(340px, 0.88fr) minmax(360px, 1.12fr);
+    gap: 46px;
+    align-items: center;
+    padding: 34px 0;
+  }
+
+  .story-copy-stack {
+    display: grid;
+    gap: 14px;
+    padding: 0;
+    align-content: center;
+  }
+
+  .story-step {
+    min-height: 132px;
+    padding: 20px 22px;
+    border-radius: 22px;
+    opacity: 0.38;
+    transform: translateX(-8px) scale(0.985);
+  }
+
+  .story-step.is-active {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+
+  .story-step span {
+    margin-bottom: 7px;
+  }
+
+  .story-step h2 {
+    font-size: clamp(1.35rem, 2vw, 2rem);
+  }
+
+  .story-step p {
+    font-size: 0.95rem;
+    line-height: 1.55;
+  }
+
+  .story-visual-stage {
+    position: relative;
+    top: auto;
+    height: min(500px, calc(100vh - 126px));
+    min-height: 390px;
+  }
+
+  .story-visual-card {
+    inset: 30px;
+    padding: 34px;
+    will-change: opacity, transform;
+  }
+
+  .story-visual-card h3 {
+    font-size: clamp(2.25rem, 4.6vw, 4.55rem);
+  }
+
+  .story-progress-rail {
+    position: absolute;
+    left: 30px;
+    right: 30px;
+    bottom: 22px;
+    height: 4px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.08);
+    overflow: hidden;
+    z-index: 6;
+  }
+
+  .story-progress-rail span {
+    display: block;
+    width: calc(var(--story-progress, 0) * 100%);
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, rgba(249,168,212,0.9), rgba(168,85,247,0.8));
+  }
+}
+
+@media (min-width: 901px) and (max-height: 760px) {
+  .story-pin-wrap {
+    top: 54px;
+    min-height: calc(100vh - 54px);
+    padding: 22px 0;
+    gap: 38px;
+  }
+
+  .story-copy-stack {
+    gap: 10px;
+  }
+
+  .story-step {
+    min-height: 104px;
+    padding: 15px 18px;
+  }
+
+  .story-step h2 {
+    font-size: clamp(1.15rem, 1.7vw, 1.55rem);
+    margin-bottom: 5px;
+  }
+
+  .story-step p {
+    font-size: 0.86rem;
+    line-height: 1.42;
+  }
+
+  .story-visual-stage {
+    height: min(410px, calc(100vh - 102px));
+    min-height: 330px;
+  }
+
+  .story-visual-card {
+    inset: 24px;
+    padding: 28px;
+  }
+
+  .story-visual-card h3 {
+    font-size: clamp(2rem, 3.75vw, 3.45rem);
+  }
+}
+
+@media (max-width: 900px) {
+  .story-pin-section {
+    min-height: auto;
+    height: auto;
+    padding: 42px 0 70px;
+    overflow: clip;
+  }
+
+  .story-pin-wrap {
+    position: relative;
+    top: auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  .story-copy-stack {
+    display: grid;
+    gap: 14px;
+    order: 2;
+  }
+
+  .story-visual-stage {
+    order: 1;
+    position: relative;
+  }
+
+  .story-progress-rail {
+    display: none;
+  }
+}

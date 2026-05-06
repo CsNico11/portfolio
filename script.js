@@ -193,14 +193,20 @@ document.addEventListener("keydown", (event) => {
     closeMobileMenu();
   }
 });
-// v18 cinematic homepage animation
+// v22 cinematic homepage animation with stable Apple-style pinned story progress.
 function initCinematicScroll() {
   const hasGsap = typeof gsap !== "undefined";
   const hasScrollTrigger = typeof ScrollTrigger !== "undefined";
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  const storySection = document.querySelector(".story-pin-section");
   const steps = Array.from(document.querySelectorAll(".story-step"));
   const cards = Array.from(document.querySelectorAll(".story-visual-card"));
+  const progressRail = document.querySelector(".story-progress-rail span");
+
+  function clamp(value, min, max) {
+    return Math.min(Math.max(value, min), max);
+  }
 
   function setActiveStory(index) {
     steps.forEach((step, stepIndex) => {
@@ -212,82 +218,67 @@ function initCinematicScroll() {
     });
   }
 
-  if (!steps.length || !cards.length) return;
+  if (!steps.length || !cards.length || !storySection) return;
 
   setActiveStory(0);
 
-  if (!hasGsap || !hasScrollTrigger || reducedMotion) {
-    const storyObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const index = Number(entry.target.dataset.storyStep || 0);
-          setActiveStory(index);
-        }
-      });
-    }, { threshold: 0.45 });
+  if (hasGsap && hasScrollTrigger && !reducedMotion) {
+    gsap.registerPlugin(ScrollTrigger);
 
-    steps.forEach((step) => storyObserver.observe(step));
-    return;
+    // The hero only animates on page load. It is not scrubbed by scroll anymore,
+    // which keeps the name and portfolio card from getting stuck in an old state.
+    gsap.fromTo(".cinematic-intro, .cinematic-name",
+      { opacity: 0, y: 30 },
+      { opacity: 1, y: 0, duration: 0.9, stagger: 0.08, ease: "power3.out", delay: 0.08, clearProps: "transform" }
+    );
+
+    gsap.fromTo(".cinematic-subtitle, .cinematic-actions, .cinematic-eyebrow",
+      { opacity: 0, y: 18 },
+      { opacity: 1, y: 0, duration: 0.75, stagger: 0.09, ease: "power2.out", delay: 0.38, clearProps: "transform" }
+    );
+
+    gsap.fromTo(".device-glass-card",
+      { opacity: 0, y: 34, rotateX: 10, rotateY: -14, scale: 0.95 },
+      { opacity: 1, y: 0, rotateX: 5, rotateY: -8, scale: 1, duration: 0.9, ease: "power3.out", delay: 0.45 }
+    );
   }
 
-  gsap.registerPlugin(ScrollTrigger);
-
-  // The hero elements only animate on page load now. They are not controlled by a scrubbed
-  // scroll animation anymore, which prevents the name/card from getting stuck invisible
-  // or "pushed in" after scrolling down and back up.
-  gsap.fromTo(".cinematic-intro, .cinematic-name",
-    { opacity: 0, y: 30 },
-    { opacity: 1, y: 0, duration: 0.9, stagger: 0.08, ease: "power3.out", delay: 0.08, clearProps: "transform" }
-  );
-
-  gsap.fromTo(".cinematic-subtitle, .cinematic-actions, .cinematic-eyebrow",
-    { opacity: 0, y: 18 },
-    { opacity: 1, y: 0, duration: 0.75, stagger: 0.09, ease: "power2.out", delay: 0.38, clearProps: "transform" }
-  );
-
-  gsap.fromTo(".device-glass-card",
-    { opacity: 0, y: 34, rotateX: 10, rotateY: -14, scale: 0.95 },
-    { opacity: 1, y: 0, rotateX: 5, rotateY: -8, scale: 1, duration: 0.9, ease: "power3.out", delay: 0.45 }
-  );
-
-  // Story pacing is controlled by whichever card is closest to the center of the viewport.
-  // This is steadier than small ScrollTrigger zones, so normal mouse wheel scrolling is less likely
-  // to jump from step 1 straight to step 3.
   let storyTicking = false;
+  let lastActiveIndex = -1;
 
-  function updateActiveStoryByCenter() {
-    const viewportCenter = window.innerHeight * 0.5;
-    let closestIndex = 0;
-    let closestDistance = Number.POSITIVE_INFINITY;
+  function updatePinnedStoryProgress() {
+    const maxIndex = Math.max(steps.length - 1, 1);
+    const rect = storySection.getBoundingClientRect();
+    const scrollableDistance = Math.max(storySection.offsetHeight - window.innerHeight, 1);
+    const rawProgress = clamp(-rect.top / scrollableDistance, 0, 1);
+    const activeIndex = clamp(Math.round(rawProgress * maxIndex), 0, maxIndex);
 
-    steps.forEach((step, index) => {
-      const rect = step.getBoundingClientRect();
-      const stepCenter = rect.top + rect.height * 0.5;
-      const distance = Math.abs(stepCenter - viewportCenter);
+    if (activeIndex !== lastActiveIndex) {
+      setActiveStory(activeIndex);
+      lastActiveIndex = activeIndex;
+    }
 
-      if (distance < closestDistance) {
-        closestDistance = distance;
-        closestIndex = index;
-      }
-    });
+    storySection.style.setProperty("--story-progress", rawProgress.toFixed(4));
+    if (progressRail) {
+      progressRail.style.width = `${rawProgress * 100}%`;
+    }
 
-    setActiveStory(closestIndex);
     storyTicking = false;
   }
 
   function requestStoryUpdate() {
     if (!storyTicking) {
-      window.requestAnimationFrame(updateActiveStoryByCenter);
+      window.requestAnimationFrame(updatePinnedStoryProgress);
       storyTicking = true;
     }
   }
 
-  updateActiveStoryByCenter();
+  updatePinnedStoryProgress();
   window.addEventListener("scroll", requestStoryUpdate, { passive: true });
   window.addEventListener("resize", requestStoryUpdate);
   window.addEventListener("load", () => {
-    ScrollTrigger.refresh();
-    updateActiveStoryByCenter();
+    if (hasGsap && hasScrollTrigger) ScrollTrigger.refresh();
+    updatePinnedStoryProgress();
   });
 }
 
