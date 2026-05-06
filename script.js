@@ -274,7 +274,7 @@ function initCinematicScroll() {
       id: "story-pin",
       trigger: storySection,
       start: "top top+=58",
-      end: () => "+=" + Math.min(Math.max(window.innerHeight * 2.15, 1350), 1900),
+      end: () => "+=" + Math.min(Math.max(window.innerHeight * 2.65, 1500), 2200),
       pin: storyWrap,
       pinSpacing: true,
       scrub: 0.35,
@@ -283,7 +283,7 @@ function initCinematicScroll() {
       onUpdate(self) {
         const maxIndex = steps.length - 1;
         const progress = clamp(self.progress, 0, 1);
-        const activeIndex = clamp(Math.round(progress * maxIndex), 0, maxIndex);
+        const activeIndex = clamp(Math.floor(progress * steps.length), 0, maxIndex);
 
         setActiveStory(activeIndex);
         storySection.style.setProperty("--story-progress", progress.toFixed(4));
