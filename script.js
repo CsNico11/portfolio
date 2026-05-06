@@ -250,20 +250,45 @@ function initCinematicScroll() {
     { opacity: 1, y: 0, rotateX: 5, rotateY: -8, scale: 1, duration: 0.9, ease: "power3.out", delay: 0.45 }
   );
 
-  // Use normal section scrolling plus a sticky visual stage instead of ScrollTrigger pinning.
-  // This keeps the Apple-inspired changing visual, but avoids the giant blank spacer issue.
-  steps.forEach((step) => {
-    ScrollTrigger.create({
-      trigger: step,
-      start: "top 58%",
-      end: "bottom 42%",
-      onEnter: () => setActiveStory(Number(step.dataset.storyStep || 0)),
-      onEnterBack: () => setActiveStory(Number(step.dataset.storyStep || 0))
-    });
-  });
+  // Story pacing is controlled by whichever card is closest to the center of the viewport.
+  // This is steadier than small ScrollTrigger zones, so normal mouse wheel scrolling is less likely
+  // to jump from step 1 straight to step 3.
+  let storyTicking = false;
 
-  window.addEventListener("load", () => ScrollTrigger.refresh());
-  window.addEventListener("resize", () => ScrollTrigger.refresh());
+  function updateActiveStoryByCenter() {
+    const viewportCenter = window.innerHeight * 0.5;
+    let closestIndex = 0;
+    let closestDistance = Number.POSITIVE_INFINITY;
+
+    steps.forEach((step, index) => {
+      const rect = step.getBoundingClientRect();
+      const stepCenter = rect.top + rect.height * 0.5;
+      const distance = Math.abs(stepCenter - viewportCenter);
+
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closestIndex = index;
+      }
+    });
+
+    setActiveStory(closestIndex);
+    storyTicking = false;
+  }
+
+  function requestStoryUpdate() {
+    if (!storyTicking) {
+      window.requestAnimationFrame(updateActiveStoryByCenter);
+      storyTicking = true;
+    }
+  }
+
+  updateActiveStoryByCenter();
+  window.addEventListener("scroll", requestStoryUpdate, { passive: true });
+  window.addEventListener("resize", requestStoryUpdate);
+  window.addEventListener("load", () => {
+    ScrollTrigger.refresh();
+    updateActiveStoryByCenter();
+  });
 }
 
 initCinematicScroll();
