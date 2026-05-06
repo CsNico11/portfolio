@@ -2441,6 +2441,15 @@
   margin-bottom: 22px;
 }
 
+.cinematic-intro {
+  margin: 0 0 10px;
+  color: var(--accent-3);
+  font-size: clamp(1.1rem, 2vw, 1.45rem);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 .cinematic-name {
   margin: 0;
   max-width: 900px;
@@ -2803,7 +2812,12 @@
 
 @media (min-width: 901px) {
   .story-pin-wrap {
-    min-height: 100vh;
+    align-items: start;
+  }
+
+  .story-visual-stage {
+    position: sticky;
+    top: 118px;
   }
 }
 
@@ -2821,6 +2835,10 @@
 
   .cinematic-name {
     font-size: clamp(4rem, 18vw, 6.4rem);
+  }
+
+  .cinematic-intro {
+    font-size: 1rem;
   }
 
   .cinematic-device {

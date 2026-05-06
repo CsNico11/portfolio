@@ -193,7 +193,7 @@ document.addEventListener("keydown", (event) => {
     closeMobileMenu();
   }
 });
-// v16 cinematic homepage scroll animation
+// v18 cinematic homepage animation
 function initCinematicScroll() {
   const hasGsap = typeof gsap !== "undefined";
   const hasScrollTrigger = typeof ScrollTrigger !== "undefined";
@@ -214,6 +214,8 @@ function initCinematicScroll() {
 
   if (!steps.length || !cards.length) return;
 
+  setActiveStory(0);
+
   if (!hasGsap || !hasScrollTrigger || reducedMotion) {
     const storyObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
@@ -230,14 +232,17 @@ function initCinematicScroll() {
 
   gsap.registerPlugin(ScrollTrigger);
 
-  gsap.fromTo(".cinematic-name",
-    { opacity: 0, y: 34, scale: 0.96 },
-    { opacity: 1, y: 0, scale: 1, duration: 0.95, ease: "power3.out", delay: 0.08 }
+  // The hero elements only animate on page load now. They are not controlled by a scrubbed
+  // scroll animation anymore, which prevents the name/card from getting stuck invisible
+  // or "pushed in" after scrolling down and back up.
+  gsap.fromTo(".cinematic-intro, .cinematic-name",
+    { opacity: 0, y: 30 },
+    { opacity: 1, y: 0, duration: 0.9, stagger: 0.08, ease: "power3.out", delay: 0.08, clearProps: "transform" }
   );
 
   gsap.fromTo(".cinematic-subtitle, .cinematic-actions, .cinematic-eyebrow",
     { opacity: 0, y: 18 },
-    { opacity: 1, y: 0, duration: 0.75, stagger: 0.09, ease: "power2.out", delay: 0.38 }
+    { opacity: 1, y: 0, duration: 0.75, stagger: 0.09, ease: "power2.out", delay: 0.38, clearProps: "transform" }
   );
 
   gsap.fromTo(".device-glass-card",
@@ -245,61 +250,20 @@ function initCinematicScroll() {
     { opacity: 1, y: 0, rotateX: 5, rotateY: -8, scale: 1, duration: 0.9, ease: "power3.out", delay: 0.45 }
   );
 
-  if (window.innerWidth > 900) {
-    gsap.fromTo(".cinematic-name",
-      { scale: 1, y: 0, opacity: 1 },
-      {
-        scale: 0.82,
-        y: -46,
-        opacity: 0.72,
-        ease: "none",
-        immediateRender: false,
-        overwrite: "auto",
-        scrollTrigger: {
-          trigger: ".cinematic-hero",
-          start: "top top",
-          end: "bottom top",
-          scrub: 0.7
-        }
-      }
-    );
-
-    gsap.to(".device-glass-card", {
-      y: -34,
-      rotateY: 0,
-      ease: "none",
-      scrollTrigger: {
-        trigger: ".cinematic-hero",
-        start: "top top",
-        end: "bottom top",
-        scrub: 0.8
-      }
-    });
-
+  // Use normal section scrolling plus a sticky visual stage instead of ScrollTrigger pinning.
+  // This keeps the Apple-inspired changing visual, but avoids the giant blank spacer issue.
+  steps.forEach((step) => {
     ScrollTrigger.create({
-      trigger: ".story-pin-section",
-      start: "top top",
-      end: "+=2200",
-      pin: ".story-pin-wrap",
-      scrub: true,
-      onUpdate: (self) => {
-        const index = Math.min(steps.length - 1, Math.floor(self.progress * steps.length));
-        setActiveStory(index);
-      }
+      trigger: step,
+      start: "top 58%",
+      end: "bottom 42%",
+      onEnter: () => setActiveStory(Number(step.dataset.storyStep || 0)),
+      onEnterBack: () => setActiveStory(Number(step.dataset.storyStep || 0))
     });
-  } else {
-    steps.forEach((step) => {
-      ScrollTrigger.create({
-        trigger: step,
-        start: "top 58%",
-        end: "bottom 40%",
-        onEnter: () => setActiveStory(Number(step.dataset.storyStep || 0)),
-        onEnterBack: () => setActiveStory(Number(step.dataset.storyStep || 0))
-      });
-    });
-  }
+  });
 
   window.addEventListener("load", () => ScrollTrigger.refresh());
+  window.addEventListener("resize", () => ScrollTrigger.refresh());
 }
 
 initCinematicScroll();
