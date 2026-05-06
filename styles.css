@@ -3350,3 +3350,37 @@
     padding: 0;
   }
 }
+
+
+/* v25 story centering and smoother pinned scroll feel. */
+@media (min-width: 901px) {
+  .story-pin-wrap {
+    min-height: calc(100vh - 110px);
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .story-copy-stack,
+  .story-visual-stage {
+    transform: translateY(clamp(-46px, -4.5vh, -24px));
+  }
+
+  .story-step {
+    transition: opacity 360ms ease, transform 360ms ease, border-color 360ms ease, background 360ms ease, box-shadow 360ms ease;
+  }
+
+  .story-visual-card {
+    transition: opacity 620ms ease, transform 620ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+
+@media (min-width: 901px) and (max-height: 760px) {
+  .story-pin-wrap {
+    min-height: calc(100vh - 88px);
+  }
+
+  .story-copy-stack,
+  .story-visual-stage {
+    transform: translateY(clamp(-28px, -3.5vh, -14px));
+  }
+}
