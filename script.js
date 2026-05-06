@@ -246,18 +246,23 @@ function initCinematicScroll() {
   );
 
   if (window.innerWidth > 900) {
-    gsap.to(".cinematic-name", {
-      scale: 0.82,
-      y: -46,
-      opacity: 0.72,
-      ease: "none",
-      scrollTrigger: {
-        trigger: ".cinematic-hero",
-        start: "top top",
-        end: "bottom top",
-        scrub: 0.7
+    gsap.fromTo(".cinematic-name",
+      { scale: 1, y: 0, opacity: 1 },
+      {
+        scale: 0.82,
+        y: -46,
+        opacity: 0.72,
+        ease: "none",
+        immediateRender: false,
+        overwrite: "auto",
+        scrollTrigger: {
+          trigger: ".cinematic-hero",
+          start: "top top",
+          end: "bottom top",
+          scrub: 0.7
+        }
       }
-    });
+    );
 
     gsap.to(".device-glass-card", {
       y: -34,
