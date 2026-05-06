@@ -193,3 +193,108 @@ document.addEventListener("keydown", (event) => {
     closeMobileMenu();
   }
 });
+// v16 cinematic homepage scroll animation
+function initCinematicScroll() {
+  const hasGsap = typeof gsap !== "undefined";
+  const hasScrollTrigger = typeof ScrollTrigger !== "undefined";
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const steps = Array.from(document.querySelectorAll(".story-step"));
+  const cards = Array.from(document.querySelectorAll(".story-visual-card"));
+
+  function setActiveStory(index) {
+    steps.forEach((step, stepIndex) => {
+      step.classList.toggle("is-active", stepIndex === index);
+    });
+
+    cards.forEach((card, cardIndex) => {
+      card.classList.toggle("active", cardIndex === index);
+    });
+  }
+
+  if (!steps.length || !cards.length) return;
+
+  if (!hasGsap || !hasScrollTrigger || reducedMotion) {
+    const storyObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const index = Number(entry.target.dataset.storyStep || 0);
+          setActiveStory(index);
+        }
+      });
+    }, { threshold: 0.45 });
+
+    steps.forEach((step) => storyObserver.observe(step));
+    return;
+  }
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.fromTo(".cinematic-name",
+    { opacity: 0, y: 34, scale: 0.96 },
+    { opacity: 1, y: 0, scale: 1, duration: 0.95, ease: "power3.out", delay: 0.08 }
+  );
+
+  gsap.fromTo(".cinematic-subtitle, .cinematic-actions, .cinematic-eyebrow",
+    { opacity: 0, y: 18 },
+    { opacity: 1, y: 0, duration: 0.75, stagger: 0.09, ease: "power2.out", delay: 0.38 }
+  );
+
+  gsap.fromTo(".device-glass-card",
+    { opacity: 0, y: 34, rotateX: 10, rotateY: -14, scale: 0.95 },
+    { opacity: 1, y: 0, rotateX: 5, rotateY: -8, scale: 1, duration: 0.9, ease: "power3.out", delay: 0.45 }
+  );
+
+  if (window.innerWidth > 900) {
+    gsap.to(".cinematic-name", {
+      scale: 0.82,
+      y: -46,
+      opacity: 0.72,
+      ease: "none",
+      scrollTrigger: {
+        trigger: ".cinematic-hero",
+        start: "top top",
+        end: "bottom top",
+        scrub: 0.7
+      }
+    });
+
+    gsap.to(".device-glass-card", {
+      y: -34,
+      rotateY: 0,
+      ease: "none",
+      scrollTrigger: {
+        trigger: ".cinematic-hero",
+        start: "top top",
+        end: "bottom top",
+        scrub: 0.8
+      }
+    });
+
+    ScrollTrigger.create({
+      trigger: ".story-pin-section",
+      start: "top top",
+      end: "+=2200",
+      pin: ".story-pin-wrap",
+      scrub: true,
+      onUpdate: (self) => {
+        const index = Math.min(steps.length - 1, Math.floor(self.progress * steps.length));
+        setActiveStory(index);
+      }
+    });
+  } else {
+    steps.forEach((step) => {
+      ScrollTrigger.create({
+        trigger: step,
+        start: "top 58%",
+        end: "bottom 40%",
+        onEnter: () => setActiveStory(Number(step.dataset.storyStep || 0)),
+        onEnterBack: () => setActiveStory(Number(step.dataset.storyStep || 0))
+      });
+    });
+  }
+
+  window.addEventListener("load", () => ScrollTrigger.refresh());
+}
+
+initCinematicScroll();

@@ -25,14 +25,14 @@
   <meta name="twitter:description" content="Systems Analyst and junior developer focused on IT support, automation, scripting, and software projects." />
   <meta name="twitter:image" content="https://nickcanizalez.com/favicon.png" />
 
-  <link rel="stylesheet" href="styles.css?v=15" />
+  <link rel="stylesheet" href="styles.css?v=16" />
 </head>
 <body>
   <div class="boot-loader" id="bootLoader" aria-hidden="true">
     <div class="boot-card">
       <div class="boot-title"><span class="boot-terminal-dot"></span>Nick.exe</div>
       <div class="boot-line">Initializing portfolio interface...</div>
-      <div class="boot-line">Loading systems, automation, and projects...</div>
+      <div class="boot-line">Loading systems, automation, and work samples...</div>
       <div class="boot-line">Status: online.</div>
       <div class="boot-progress"><span></span></div>
     </div>
@@ -50,7 +50,7 @@
         <div class="nav-links" id="navLinks">
           <a href="#about">About</a>
           <a href="#skills">Skills</a>
-          <a href="#projects">Projects</a>
+          <a href="#projects">My Work</a>
           <a href="#experience">Experience</a>
           <a href="#credentials">Credentials</a>
           <a href="#contact">Contact</a>
@@ -65,57 +65,107 @@
   </header>
 
   <main>
-    <section id="home" class="container hero hero-v2">
-      <div class="hero-copy">
-        <div class="eyebrow"><span class="dot"></span>Systems Analyst | Developer | Bilingual IT Professional</div>
-        <h1>I support systems, automate workflows, and build software.</h1>
-        <p>
-          I am Nick Canizalez, a Systems Analyst with hands-on experience in IT support, troubleshooting, scripting, automation, and developer-focused projects. I work with real users, real systems, and practical code that makes work cleaner and faster.
-        </p>
-        <div class="hero-highlights" aria-label="Professional highlights">
-          <span>County IT systems</span>
-          <span>Automation scripts</span>
-          <span>Unity + C# projects</span>
-          <span>Fluent English and Spanish</span>
-        </div>
-        <div class="actions">
-          <a class="btn primary" href="#projects">View Projects</a>
-          <a class="btn secondary" href="Nick-Canizalez-Resume.pdf" target="_blank">View Resume</a>
-          <a class="btn secondary" href="#contact">Contact Me</a>
-        </div>
+    <section id="home" class="cinematic-hero" aria-label="Intro">
+      <div class="cinematic-bg" aria-hidden="true">
+        <span class="cinema-orb cinema-orb-one"></span>
+        <span class="cinema-orb cinema-orb-two"></span>
+        <span class="cinema-grid"></span>
       </div>
 
-      <aside class="hero-showcase reveal" aria-label="Portfolio snapshot">
-        <div class="showcase-top">
-          <div class="profile-circle compact-profile">
-            <img src="cat-profile.png" alt="Stylized cat profile logo" />
-          </div>
-          <div>
-            <p class="showcase-label">Portfolio Snapshot</p>
-            <h2>Nick Canizalez</h2>
-            <p class="showcase-subtitle">Systems Analyst building toward developer roles</p>
-          </div>
-        </div>
-
-        <div class="terminal-card" aria-label="Current focus list">
-          <div class="terminal-header">
-            <span></span><span></span><span></span>
-            <strong>current-focus.exe</strong>
-          </div>
-          <div class="terminal-lines">
-            <p>status: supporting county users and systems</p>
-            <p>building: 3D Unity survival game</p>
-            <p>tools: C#, Python, PowerShell, GitHub</p>
+      <div class="container cinematic-inner">
+        <div class="cinematic-copy">
+          <div class="eyebrow cinematic-eyebrow"><span class="dot"></span>Systems Analyst | Developer focused | English and Spanish</div>
+          <h1 class="cinematic-name">Nick Canizalez</h1>
+          <p class="cinematic-subtitle">I support systems, automate workflows, and build practical software.</p>
+          <div class="cinematic-actions">
+            <a class="btn primary" href="#projects">View My Work</a>
+            <a class="btn secondary" href="Nick-Canizalez-Resume.pdf" target="_blank">View Resume</a>
+            <a class="btn secondary" href="#contact">Contact Me</a>
           </div>
         </div>
 
-        <div class="stat-grid showcase-stats">
-          <div class="stat"><strong>IT</strong><span>Support and systems</span></div>
-          <div class="stat"><strong>Dev</strong><span>C#, Python, web</span></div>
-          <div class="stat"><strong>Certs</strong><span>AZ-900, A+</span></div>
-          <div class="stat"><strong>Lang</strong><span>English and Spanish</span></div>
+        <aside class="cinematic-device" aria-label="Portfolio snapshot">
+          <div class="device-glass-card">
+            <div class="device-topline">
+              <span></span><span></span><span></span>
+              <strong>portfolio.snapshot</strong>
+            </div>
+            <div class="device-profile-row">
+              <div class="profile-circle compact-profile">
+                <img src="cat-profile.png" alt="Stylized cat profile logo" />
+              </div>
+              <div>
+                <p class="showcase-label">Current focus</p>
+                <h2>Systems + Software</h2>
+                <p class="showcase-subtitle">Real support experience with developer direction.</p>
+              </div>
+            </div>
+            <div class="device-metric-list">
+              <div><strong>C#</strong><span>Unity gameplay systems</span></div>
+              <div><strong>Python</strong><span>Automation and local tooling</span></div>
+              <div><strong>PowerShell</strong><span>Support and device workflows</span></div>
+              <div><strong>English + Spanish</strong><span>User focused communication</span></div>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="scroll-cue" aria-hidden="true">
+        <span></span>
+        Scroll
+      </div>
+    </section>
+
+    <section class="story-pin-section" aria-label="Professional story">
+      <div class="container story-pin-wrap">
+        <div class="story-copy-stack">
+          <article class="story-step is-active" data-story-step="0">
+            <span>01</span>
+            <h2>Systems Analyst</h2>
+            <p>I support users, devices, workflows, and technical systems in a real county government environment.</p>
+          </article>
+          <article class="story-step" data-story-step="1">
+            <span>02</span>
+            <h2>Automation Focused</h2>
+            <p>I use scripting to reduce repetitive work, clean up tracking processes, and make daily technical tasks faster.</p>
+          </article>
+          <article class="story-step" data-story-step="2">
+            <span>03</span>
+            <h2>Developer in Progress</h2>
+            <p>I build with C#, Unity, Python, JavaScript, and Java while focusing on logic, debugging, and working systems.</p>
+          </article>
+          <article class="story-step" data-story-step="3">
+            <span>04</span>
+            <h2>Bilingual Technical Communication</h2>
+            <p>I explain technical issues clearly in English and Spanish for users with different comfort levels.</p>
+          </article>
         </div>
-      </aside>
+
+        <div class="story-visual-stage" aria-hidden="true">
+          <div class="story-visual-card active" data-story-card="0">
+            <span class="visual-kicker">IT Operations</span>
+            <h3>Support that keeps people moving.</h3>
+            <div class="mini-dashboard">
+              <span></span><span></span><span></span>
+            </div>
+          </div>
+          <div class="story-visual-card" data-story-card="1">
+            <span class="visual-kicker">Automation</span>
+            <h3>Cleaner workflows through scripts.</h3>
+            <code>task.status = "faster";</code>
+          </div>
+          <div class="story-visual-card" data-story-card="2">
+            <span class="visual-kicker">Unity + C#</span>
+            <h3>Gameplay systems in progress.</h3>
+            <div class="game-orbit"><span></span><span></span><span></span></div>
+          </div>
+          <div class="story-visual-card" data-story-card="3">
+            <span class="visual-kicker">Communication</span>
+            <h3>Technical support that users understand.</h3>
+            <div class="language-pills"><span>English</span><span>Spanish</span></div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <section class="container proof-strip reveal" aria-label="Quick professional proof">
@@ -201,8 +251,8 @@
     </section>
 
     <section id="projects" class="container reveal">
-      <h2 class="section-title">Projects</h2>
-      <p class="section-subtitle">Projects that show my technical direction, problem-solving style, and ability to build practical tools beyond daily support work.</p>
+      <h2 class="section-title">My Work</h2>
+      <p class="section-subtitle">Selected work that shows my technical direction, problem-solving style, and ability to build practical tools beyond daily support work.</p>
       <div class="project-grid featured-project-grid">
         <article class="card project-card featured-project glow-card">
           <div class="project-visual unity-visual">
@@ -408,6 +458,8 @@
     </div>
   </footer>
 
-  <script src="script.js?v=15"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+  <script src="script.js?v=16"></script>
 </body>
 </html>
