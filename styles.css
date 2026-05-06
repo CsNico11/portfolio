@@ -3208,3 +3208,150 @@
     display: none;
   }
 }
+
+/* v23 pinned story correction: real pinning without a giant empty scroll well. */
+.story-pin-section {
+  min-height: auto !important;
+  height: auto !important;
+  padding: 70px 0 80px !important;
+  overflow: visible !important;
+}
+
+@media (min-width: 901px) {
+  .story-pin-section {
+    min-height: auto !important;
+    height: auto !important;
+  }
+
+  .story-pin-wrap {
+    position: relative !important;
+    top: auto !important;
+    min-height: calc(100vh - 58px) !important;
+    display: grid !important;
+    grid-template-columns: minmax(330px, 0.9fr) minmax(390px, 1.1fr) !important;
+    gap: clamp(32px, 4vw, 58px) !important;
+    align-items: center !important;
+    padding: 28px 0 !important;
+  }
+
+  .story-copy-stack {
+    display: grid !important;
+    gap: 12px !important;
+    align-content: center !important;
+    padding: 0 !important;
+  }
+
+  .story-step {
+    min-height: auto !important;
+    padding: 18px 20px !important;
+    border-radius: 18px !important;
+    opacity: 0.34 !important;
+    transform: translateX(-6px) scale(0.985) !important;
+    transition: opacity 220ms ease, transform 220ms ease, border-color 220ms ease, background 220ms ease !important;
+  }
+
+  .story-step.is-active {
+    opacity: 1 !important;
+    transform: translateX(0) scale(1) !important;
+  }
+
+  .story-step span {
+    margin-bottom: 6px !important;
+  }
+
+  .story-step h2 {
+    font-size: clamp(1.2rem, 1.85vw, 1.8rem) !important;
+    margin-bottom: 6px !important;
+  }
+
+  .story-step p {
+    font-size: 0.86rem !important;
+    line-height: 1.45 !important;
+  }
+
+  .story-visual-stage {
+    position: relative !important;
+    top: auto !important;
+    height: min(460px, calc(100vh - 150px)) !important;
+    min-height: 360px !important;
+  }
+
+  .story-visual-card {
+    inset: 28px !important;
+    padding: clamp(26px, 3.4vw, 40px) !important;
+  }
+
+  .story-visual-card h3 {
+    font-size: clamp(2.05rem, 4vw, 4.15rem) !important;
+    line-height: 0.98 !important;
+  }
+
+  .story-progress-rail {
+    left: 28px !important;
+    right: 28px !important;
+    bottom: 20px !important;
+  }
+}
+
+@media (min-width: 901px) and (max-height: 760px) {
+  .story-pin-section {
+    padding: 52px 0 62px !important;
+  }
+
+  .story-pin-wrap {
+    min-height: calc(100vh - 58px) !important;
+    padding: 14px 0 !important;
+    gap: 34px !important;
+  }
+
+  .story-copy-stack {
+    gap: 10px !important;
+  }
+
+  .story-step {
+    padding: 13px 17px !important;
+  }
+
+  .story-step h2 {
+    font-size: clamp(1.08rem, 1.55vw, 1.45rem) !important;
+    margin-bottom: 4px !important;
+  }
+
+  .story-step p {
+    font-size: 0.8rem !important;
+    line-height: 1.36 !important;
+  }
+
+  .story-visual-stage {
+    height: min(372px, calc(100vh - 124px)) !important;
+    min-height: 315px !important;
+  }
+
+  .story-visual-card {
+    inset: 22px !important;
+    padding: 25px !important;
+  }
+
+  .story-visual-card h3 {
+    font-size: clamp(1.9rem, 3.4vw, 3.35rem) !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .story-pin-section {
+    min-height: auto !important;
+    height: auto !important;
+    padding: 42px 0 70px !important;
+    overflow: clip !important;
+  }
+
+  .story-pin-wrap {
+    position: relative !important;
+    top: auto !important;
+    min-height: auto !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 22px !important;
+    padding: 0 !important;
+  }
+}

@@ -193,13 +193,14 @@ document.addEventListener("keydown", (event) => {
     closeMobileMenu();
   }
 });
-// v22 cinematic homepage animation with stable Apple-style pinned story progress.
+// v23 cinematic homepage animation with real pinned story section.
 function initCinematicScroll() {
   const hasGsap = typeof gsap !== "undefined";
   const hasScrollTrigger = typeof ScrollTrigger !== "undefined";
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   const storySection = document.querySelector(".story-pin-section");
+  const storyWrap = document.querySelector(".story-pin-wrap");
   const steps = Array.from(document.querySelectorAll(".story-step"));
   const cards = Array.from(document.querySelectorAll(".story-visual-card"));
   const progressRail = document.querySelector(".story-progress-rail span");
@@ -218,67 +219,91 @@ function initCinematicScroll() {
     });
   }
 
-  if (!steps.length || !cards.length || !storySection) return;
+  if (steps.length && cards.length) {
+    setActiveStory(0);
+  }
 
-  setActiveStory(0);
+  if (!hasGsap || reducedMotion) {
+    return;
+  }
 
-  if (hasGsap && hasScrollTrigger && !reducedMotion) {
+  if (hasScrollTrigger) {
     gsap.registerPlugin(ScrollTrigger);
-
-    // The hero only animates on page load. It is not scrubbed by scroll anymore,
-    // which keeps the name and portfolio card from getting stuck in an old state.
-    gsap.fromTo(".cinematic-intro, .cinematic-name",
-      { opacity: 0, y: 30 },
-      { opacity: 1, y: 0, duration: 0.9, stagger: 0.08, ease: "power3.out", delay: 0.08, clearProps: "transform" }
-    );
-
-    gsap.fromTo(".cinematic-subtitle, .cinematic-actions, .cinematic-eyebrow",
-      { opacity: 0, y: 18 },
-      { opacity: 1, y: 0, duration: 0.75, stagger: 0.09, ease: "power2.out", delay: 0.38, clearProps: "transform" }
-    );
-
-    gsap.fromTo(".device-glass-card",
-      { opacity: 0, y: 34, rotateX: 10, rotateY: -14, scale: 0.95 },
-      { opacity: 1, y: 0, rotateX: 5, rotateY: -8, scale: 1, duration: 0.9, ease: "power3.out", delay: 0.45 }
-    );
   }
 
-  let storyTicking = false;
-  let lastActiveIndex = -1;
+  // The hero only animates on page load. It is not scrubbed by scroll.
+  gsap.fromTo(".cinematic-intro, .cinematic-name",
+    { opacity: 0, y: 30 },
+    { opacity: 1, y: 0, duration: 0.9, stagger: 0.08, ease: "power3.out", delay: 0.08, clearProps: "transform" }
+  );
 
-  function updatePinnedStoryProgress() {
-    const maxIndex = Math.max(steps.length - 1, 1);
-    const rect = storySection.getBoundingClientRect();
-    const scrollableDistance = Math.max(storySection.offsetHeight - window.innerHeight, 1);
-    const rawProgress = clamp(-rect.top / scrollableDistance, 0, 1);
-    const activeIndex = clamp(Math.round(rawProgress * maxIndex), 0, maxIndex);
+  gsap.fromTo(".cinematic-subtitle, .cinematic-actions, .cinematic-eyebrow",
+    { opacity: 0, y: 18 },
+    { opacity: 1, y: 0, duration: 0.75, stagger: 0.09, ease: "power2.out", delay: 0.38, clearProps: "transform" }
+  );
 
-    if (activeIndex !== lastActiveIndex) {
-      setActiveStory(activeIndex);
-      lastActiveIndex = activeIndex;
-    }
+  gsap.fromTo(".device-glass-card",
+    { opacity: 0, y: 34, rotateX: 10, rotateY: -14, scale: 0.95 },
+    { opacity: 1, y: 0, rotateX: 5, rotateY: -8, scale: 1, duration: 0.9, ease: "power3.out", delay: 0.45, clearProps: "opacity" }
+  );
 
-    storySection.style.setProperty("--story-progress", rawProgress.toFixed(4));
-    if (progressRail) {
-      progressRail.style.width = `${rawProgress * 100}%`;
-    }
-
-    storyTicking = false;
+  if (!hasScrollTrigger || !storySection || !storyWrap || !steps.length || !cards.length) {
+    return;
   }
 
-  function requestStoryUpdate() {
-    if (!storyTicking) {
-      window.requestAnimationFrame(updatePinnedStoryProgress);
-      storyTicking = true;
+  const desktopQuery = window.matchMedia("(min-width: 901px)");
+
+  function setupPinnedStory() {
+    ScrollTrigger.getAll().forEach((trigger) => {
+      if (trigger.vars && trigger.vars.id === "story-pin") {
+        trigger.kill(true);
+      }
+    });
+
+    storySection.style.setProperty("--story-progress", "0");
+    if (progressRail) progressRail.style.width = "0%";
+    setActiveStory(0);
+
+    if (!desktopQuery.matches) {
+      storyWrap.style.clearProperty("transform");
+      storyWrap.style.clearProperty("position");
+      return;
     }
+
+    ScrollTrigger.create({
+      id: "story-pin",
+      trigger: storySection,
+      start: "top top+=58",
+      end: () => "+=" + Math.min(Math.max(window.innerHeight * 2.15, 1350), 1900),
+      pin: storyWrap,
+      pinSpacing: true,
+      scrub: 0.35,
+      anticipatePin: 1,
+      invalidateOnRefresh: true,
+      onUpdate(self) {
+        const maxIndex = steps.length - 1;
+        const progress = clamp(self.progress, 0, 1);
+        const activeIndex = clamp(Math.round(progress * maxIndex), 0, maxIndex);
+
+        setActiveStory(activeIndex);
+        storySection.style.setProperty("--story-progress", progress.toFixed(4));
+        if (progressRail) {
+          progressRail.style.width = `${progress * 100}%`;
+        }
+      }
+    });
   }
 
-  updatePinnedStoryProgress();
-  window.addEventListener("scroll", requestStoryUpdate, { passive: true });
-  window.addEventListener("resize", requestStoryUpdate);
+  setupPinnedStory();
+
+  window.addEventListener("resize", () => {
+    setupPinnedStory();
+    ScrollTrigger.refresh();
+  });
+
   window.addEventListener("load", () => {
-    if (hasGsap && hasScrollTrigger) ScrollTrigger.refresh();
-    updatePinnedStoryProgress();
+    setupPinnedStory();
+    ScrollTrigger.refresh();
   });
 }
 
