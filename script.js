@@ -61,9 +61,6 @@ function toggleMobileMenu(event) {
 if (mobileMenuToggle && navLinks) {
   mobileMenuToggle.addEventListener("click", toggleMobileMenu);
 
-  navLinks.addEventListener("click", (event) => {
-    event.stopPropagation();
-  });
 
   navLinks.querySelectorAll("a").forEach((link) => {
     link.addEventListener("click", closeMobileMenu);
@@ -303,17 +300,23 @@ function initCinematicScroll() {
     });
   }
 
-  setupPinnedStory();
+  let storyResizeTimer;
 
-  window.addEventListener("resize", () => {
+  function refreshPinnedStory() {
     setupPinnedStory();
     ScrollTrigger.refresh();
+  }
+
+  refreshPinnedStory();
+
+  window.addEventListener("resize", () => {
+    window.clearTimeout(storyResizeTimer);
+    storyResizeTimer = window.setTimeout(refreshPinnedStory, 150);
   });
 
   window.addEventListener("load", () => {
-    setupPinnedStory();
     ScrollTrigger.refresh();
-  });
+  }, { once: true });
 }
 
 initCinematicScroll();
