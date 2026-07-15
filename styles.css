@@ -1531,18 +1531,23 @@ footer {
   display: grid !important;
   grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   gap: 22px !important;
-  align-items: start !important;
+  align-items: stretch !important;
 }
 
 #projects .project-card,
 #projects article.project-card.card {
-  display: block !important;
+  display: flex !important;
+  flex-direction: column !important;
   position: relative !important;
-  height: auto !important;
+  height: 100% !important;
   min-height: 0 !important;
   padding: 18px !important;
   overflow: hidden !important;
-  background: linear-gradient(145deg, rgba(18,11,31,0.92), rgba(7,5,13,0.9)) !important;
+  background: linear-gradient(
+    145deg,
+    rgba(18,11,31,0.92),
+    rgba(7,5,13,0.9)
+  ) !important;
   border: 1px solid rgba(249,168,212,0.22) !important;
   border-radius: 22px !important;
 }
@@ -1550,32 +1555,27 @@ footer {
 #projects .project-card > *,
 #projects .project-card > div,
 #projects .project-card > div:not(.project-visual) {
-  display: block !important;
+  display: flex !important;
+  flex: 1 1 auto !important;
+  flex-direction: column !important;
   position: relative !important;
+  width: 100% !important;
   height: auto !important;
   min-height: 0 !important;
-  max-height: none !important;
-  width: 100% !important;
-  flex: none !important;
-  transform: none !important;
 }
 
 #projects .project-card > .project-visual {
   display: block !important;
   position: relative !important;
-  height: 190px !important;
-  min-height: 190px !important;
-  max-height: 190px !important;
+  flex: 0 0 170px !important;
+  width: 100% !important;
+  height: 170px !important;
+  min-height: 170px !important;
+  max-height: 170px !important;
   margin: 0 0 18px 0 !important;
   padding: 18px !important;
   border-radius: 18px !important;
   overflow: hidden !important;
-}
-
-#projects .project-card:not(.featured-project) > .project-visual {
-  height: 170px !important;
-  min-height: 170px !important;
-  max-height: 170px !important;
 }
 
 #projects .project-title-row {
@@ -1631,8 +1631,8 @@ footer {
   display: flex !important;
   flex-wrap: wrap !important;
   gap: 8px !important;
-  margin: 16px 0 0 0 !important;
-  padding: 0 !important;
+  margin: auto 0 0 0 !important;
+  padding: 18px 0 0 !important;
 }
 
 #projects .project-card .project-actions {
