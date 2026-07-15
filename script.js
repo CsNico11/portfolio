@@ -20,6 +20,62 @@ if (year) {
 }
 
 const root = document.documentElement;
+const themeToggle = document.getElementById("themeToggle");
+const themeLabel = themeToggle?.querySelector(".theme-label");
+const THEME_STORAGE_KEY = "nickPortfolioTheme";
+
+function updateThemeToggle(theme) {
+  if (!themeToggle) return;
+
+  const isLight = theme === "light";
+  const nextTheme = isLight ? "dark" : "light";
+
+  themeToggle.setAttribute("aria-label", `Switch to ${nextTheme} theme`);
+  themeToggle.setAttribute("aria-pressed", String(isLight));
+  themeToggle.title = `Switch to ${nextTheme} theme`;
+
+  if (themeLabel) {
+    themeLabel.textContent = isLight ? "Dark" : "Light";
+  }
+}
+
+function setTheme(theme, { persist = false } = {}) {
+  const safeTheme = theme === "light" ? "light" : "dark";
+
+  root.dataset.theme = safeTheme;
+  root.style.colorScheme = safeTheme;
+  updateThemeToggle(safeTheme);
+
+  if (persist) {
+    try {
+      localStorage.setItem(THEME_STORAGE_KEY, safeTheme);
+    } catch (error) {
+      // The theme still works for this page when browser storage is unavailable.
+    }
+  }
+}
+
+setTheme(root.dataset.theme);
+
+if (themeToggle) {
+  themeToggle.addEventListener("click", () => {
+    const nextTheme = root.dataset.theme === "light" ? "dark" : "light";
+
+    root.classList.add("theme-changing");
+    setTheme(nextTheme, { persist: true });
+
+    window.setTimeout(() => {
+      root.classList.remove("theme-changing");
+    }, 320);
+  });
+}
+
+window.addEventListener("storage", (event) => {
+  if (event.key === THEME_STORAGE_KEY && (event.newValue === "light" || event.newValue === "dark")) {
+    setTheme(event.newValue);
+  }
+});
+
 let ticking = false;
 
 function updateScrollBackground() {

@@ -25,7 +25,31 @@
   <meta name="twitter:description" content="Systems Analyst and junior developer focused on IT support, automation, scripting, and software projects." />
   <meta name="twitter:image" content="https://nickcanizalez.com/favicon.png" />
 
-  <link rel="stylesheet" href="styles.css?v=17" />
+
+  <!-- Apply the saved theme before CSS loads to prevent a flash of the wrong theme. -->
+  <script>
+    (() => {
+      const presetTheme = document.documentElement.dataset.theme;
+      let theme = presetTheme;
+
+      if (theme !== "light" && theme !== "dark") {
+        try {
+          theme = localStorage.getItem("nickPortfolioTheme");
+        } catch (error) {
+          theme = null;
+        }
+      }
+
+      if (theme !== "light" && theme !== "dark") {
+        theme = "dark";
+      }
+
+      document.documentElement.dataset.theme = theme;
+      document.documentElement.style.colorScheme = theme;
+    })();
+  </script>
+
+  <link rel="stylesheet" href="styles.css?v=18" />
 </head>
 <body>
   <div class="boot-loader" id="bootLoader" aria-hidden="true">
@@ -55,11 +79,24 @@
           <a href="#credentials">Credentials</a>
           <a href="#contact">Contact</a>
         </div>
-        <button class="mobile-menu-toggle" type="button" id="mobileMenuToggle" aria-label="Open navigation menu" aria-expanded="false">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
+        <div class="nav-controls">
+          <button class="theme-toggle" type="button" id="themeToggle" aria-label="Switch to light theme" aria-pressed="false">
+            <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="4"></circle>
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.41M17.66 6.34l1.41-1.41"></path>
+            </svg>
+            <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M20.4 15.3A8.5 8.5 0 0 1 8.7 3.6 8.5 8.5 0 1 0 20.4 15.3Z"></path>
+            </svg>
+            <span class="theme-label">Light</span>
+          </button>
+
+          <button class="mobile-menu-toggle" type="button" id="mobileMenuToggle" aria-label="Open navigation menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
       </nav>
     </div>
   </header>
@@ -415,7 +452,7 @@
 
           <div class="contact-details">
             <p>Email: <a href="mailto:contact@nickcanizalez.com?subject=Portfolio%20Inquiry">contact@nickcanizalez.com</a></p>
-            <p>Location: Atlanta, GA</p>
+            <p>Location: Metro Atlanta, GA</p>
           </div>
 
           <div class="contact-actions">
@@ -461,6 +498,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
-  <script src="script.js?v=17"></script>
+  <script src="script.js?v=18"></script>
 </body>
 </html>
