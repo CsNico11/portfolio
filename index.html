@@ -49,7 +49,7 @@
     })();
   </script>
 
-  <link rel="stylesheet" href="styles.css?v=18" />
+  <link rel="stylesheet" href="styles.css?v=20" />
 </head>
 <body>
   <div class="boot-loader" id="bootLoader" aria-hidden="true">
@@ -179,6 +179,33 @@
         </div>
 
         <div class="story-visual-stage" aria-hidden="true">
+          <div class="story-cat-window" aria-hidden="true">
+            <div class="cat-pop-lines">
+              <span class="cat-pop-line"></span>
+              <span class="cat-pop-line"></span>
+              <span class="cat-pop-line"></span>
+            </div>
+            <div class="story-cat-companion">
+              <svg class="story-cat-art" viewBox="0 0 120 88" role="presentation" focusable="false">
+                <path class="cat-head" d="M22 64C18 55 18 39 23 28L19 9L39 20C49 14 71 14 81 20L101 9L97 28C102 39 102 55 98 64" />
+                <path class="cat-cheek" d="M22 64C30 70 42 72 60 72C78 72 90 70 98 64" />
+                <g class="cat-eye">
+                  <circle cx="43" cy="43" r="9" />
+                  <circle class="cat-pupil" cx="45" cy="44" r="3" />
+                </g>
+                <g class="cat-eye">
+                  <circle cx="77" cy="43" r="9" />
+                  <circle class="cat-pupil" cx="75" cy="44" r="3" />
+                </g>
+                <path class="cat-nose" d="M56 56Q60 53 64 56Q62 60 60 60Q58 60 56 56Z" />
+                <path class="cat-mouth" d="M60 60V64M60 64Q56 67 53 64M60 64Q64 67 67 64" />
+                <path class="cat-whisker" d="M48 59L27 56M48 63L25 64M72 59L93 56M72 63L95 64" />
+                <path class="cat-paw" d="M23 80C21 72 27 66 34 66C40 66 44 71 43 77C42 83 36 86 30 85C26 85 24 83 23 80Z" />
+                <path class="cat-paw" d="M77 77C76 71 80 66 86 66C93 66 99 72 97 80C96 83 94 85 90 85C84 86 78 83 77 77Z" />
+                <path class="cat-toes" d="M29 70L31 80M35 69L36 80M91 70L89 80M85 69L84 80" />
+              </svg>
+            </div>
+          </div>
           <div class="story-progress-rail"><span></span></div>
           <div class="story-visual-card active" data-story-card="0">
             <span class="visual-kicker">IT Operations</span>
@@ -322,15 +349,15 @@
         <article class="card project-card glow-card">
           <div class="project-visual server-visual">
             <div class="visual-chip">Home Lab</div>
-            <p>Media Server & Adblocker</p>
+            <p>Jellyfin server and network services</p>
           </div>
           <div>
             <h3>Home Media Server & Network Services</h3>
             <p>Built and maintain a Linux-based home media server running Jellyfin, with hardware-accelerated transcoding, multi-drive storage, network file shares, and remote management. Deployed Pi-hole as a network-wide DNS filter to reduce ads and trackers across devices on the home network.</p>
             <div class="tags">
-              <span class="tag">Python</span>
-              <span class="tag">Home Assistant</span>
+              <span class="tag">Jellyfin</span>
               <span class="tag">Linux</span>
+              <span class="tag">Pi-hole</span>
               <span class="tag">Networking</span>
             </div>
             <div class="project-actions">
@@ -498,6 +525,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
-  <script src="script.js?v=18"></script>
+  <script src="script.js?v=20"></script>
 </body>
 </html>

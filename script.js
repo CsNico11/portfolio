@@ -159,14 +159,14 @@ const projectData = {
     tags: ["Unity", "C#", "Gameplay Systems", "GitHub"]
   },
   server: {
-    title: "Home Media Server & Automation",
-    summary: "A home lab project built around networking, remote access, automation, and practical system control.",
+    title: "Home Media Server & Network Services",
+    summary: "A Linux home lab built around self-hosted media, storage, network services, and practical infrastructure administration.",
     details: [
-      "Configured a home lab environment using static IPs, bridge networking, and remote access tools.",
-      "Used Python scripts with Home Assistant to automate device tasks and schedule power cycles.",
-      "Gained hands-on experience with Linux services, remote administration, and basic infrastructure troubleshooting."
+      "Built and maintain a Linux-based Jellyfin server with multi-drive storage, mounted filesystems, network shares, permissions, and remote administration.",
+      "Configured Intel Quick Sync hardware acceleration to improve video transcoding efficiency across supported playback devices.",
+      "Deployed Pi-hole as the home network's DNS resolver and filtering layer, using blocklists to reduce ads and tracking across connected devices."
     ],
-    tags: ["Python", "Linux", "Home Assistant", "Networking"]
+    tags: ["Jellyfin", "Linux", "Pi-hole", "Networking"]
   },
   automation: {
     title: "Internal Procedure Automation",
@@ -376,3 +376,115 @@ function initCinematicScroll() {
 }
 
 initCinematicScroll();
+
+function initStoryCatCompanion() {
+  const stage = document.querySelector(".story-visual-stage");
+  const catWindow = stage?.querySelector(".story-cat-window");
+  const cat = stage?.querySelector(".story-cat-companion");
+
+  if (!stage || !catWindow || !cat) return;
+
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let isVisible = false;
+  let blinkTimer;
+  let blinkEndTimer;
+  let popTimer;
+  let entranceTimer;
+  let exitTimer;
+
+  function clearCatTimers() {
+    window.clearTimeout(blinkTimer);
+    window.clearTimeout(blinkEndTimer);
+    window.clearTimeout(popTimer);
+    window.clearTimeout(entranceTimer);
+    window.clearTimeout(exitTimer);
+  }
+
+  function triggerPop() {
+    if (reducedMotion) return;
+
+    catWindow.classList.remove("is-popping");
+    void catWindow.offsetWidth;
+    catWindow.classList.add("is-popping");
+
+    window.clearTimeout(popTimer);
+    popTimer = window.setTimeout(() => {
+      catWindow.classList.remove("is-popping");
+    }, 520);
+  }
+
+  function scheduleBlink() {
+    window.clearTimeout(blinkTimer);
+    if (!isVisible || reducedMotion) return;
+
+    const delay = 8000 + Math.random() * 8000;
+    blinkTimer = window.setTimeout(() => {
+      if (!isVisible) return;
+
+      cat.classList.add("is-blinking");
+      blinkEndTimer = window.setTimeout(() => {
+        cat.classList.remove("is-blinking");
+        scheduleBlink();
+      }, 150);
+    }, delay);
+  }
+
+  function showCat() {
+    if (isVisible) return;
+    isVisible = true;
+
+    window.clearTimeout(exitTimer);
+    cat.classList.add("is-visible");
+
+    if (!reducedMotion) {
+      cat.classList.add("is-entering");
+      triggerPop();
+      entranceTimer = window.setTimeout(() => {
+        cat.classList.remove("is-entering");
+      }, 700);
+    }
+
+    scheduleBlink();
+  }
+
+  function hideCat() {
+    if (!isVisible) return;
+    isVisible = false;
+
+    window.clearTimeout(blinkTimer);
+    window.clearTimeout(blinkEndTimer);
+    cat.classList.remove("is-blinking", "is-entering");
+
+    if (reducedMotion) {
+      cat.classList.remove("is-visible");
+      return;
+    }
+
+    triggerPop();
+    exitTimer = window.setTimeout(() => {
+      cat.classList.remove("is-visible");
+    }, 180);
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting && entry.intersectionRatio >= 0.18) {
+        showCat();
+      } else {
+        hideCat();
+      }
+    });
+  }, {
+    threshold: [0, 0.18],
+    rootMargin: "-8% 0px -8% 0px"
+  });
+
+  observer.observe(stage);
+
+  window.addEventListener("pagehide", () => {
+    observer.disconnect();
+    clearCatTimers();
+  }, { once: true });
+}
+
+initStoryCatCompanion();
