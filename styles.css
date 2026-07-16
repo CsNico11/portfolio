@@ -3064,4 +3064,34 @@ footer {
     display: none;
   }
 }
+/* Correct the cat so it peeks over the inner panel edge */
+.story-visual-stage {
+  overflow: visible;
+}
 
+.story-cat-window {
+  top: -58px;
+  right: clamp(34px, 4vw, 48px);
+  width: 126px;
+  height: 102px;
+}
+
+/* Tablet and mobile */
+@media (max-width: 900px) {
+  .story-cat-window {
+    top: -35px;
+    right: 20px;
+    width: 84px;
+    height: 74px;
+  }
+}
+
+/* Small phones */
+@media (max-width: 560px) {
+  .story-cat-window {
+    top: -26px;
+    right: 14px;
+    width: 72px;
+    height: 64px;
+  }
+}
