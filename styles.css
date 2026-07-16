@@ -2818,7 +2818,7 @@ footer {
 /* Story cat companion ----------------------------------------------------- */
 .story-cat-window {
   position: absolute;
-  top: -58px; /* peeks over the story-visual-stage panel edge */
+  top: -75px; /* peeks over the story-visual-stage panel edge */
   right: clamp(34px, 4vw, 48px);
   z-index: 9;
   width: 126px;
